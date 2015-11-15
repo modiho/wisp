@@ -11,5 +11,5 @@ A transforming ball of energy saves the world from eternal darkness!
 ## Developing
 
 - [Node.js](http://nodejs.org) installieren um NPM zu bekommen
-- `npm install -g babel`
+- `npm install`
 - `npm run watch`
