@@ -1,6 +1,8 @@
 import draw from 'draw';
 import update from 'update';
 import inputEvents from 'inputEvents';
+import { observeEvent } from 'observable';
+import { toImmutable } from 'immutable';
 
 const canvas = document.getElementById('game');
 const context = canvas.getContext('2d');
@@ -14,14 +16,14 @@ const center = {
 setCanvasProportions();
 
 let events = [];
-let state = Immutable.fromJS({
+let state = toImmutable({
     playerCoordinates: {
         x: center.x,
         y: center.y
     }
 });
 
-inputEvents(keyDownEvents(document))
+inputEvents(observeEvent(document, 'keydown'))
 .subscribe(
     (event) => events.push(event),
     (error) => console.error(error)
@@ -42,8 +44,4 @@ function loop() {
 function setCanvasProportions() {
     canvas.width = width;
     canvas.height = height;
-}
-
-function keyDownEvents(root) {
-    return Rx.Observable.fromEvent(root, 'keydown');
 }

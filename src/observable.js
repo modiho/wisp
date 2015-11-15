@@ -1,0 +1,1 @@
+export const observeEvent = Rx.Observable.fromEvent;

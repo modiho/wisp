@@ -1,8 +1,8 @@
-const isEventType = R.propEq('type');
-const notNil = (v) => !R.isNil(v);
-const get = R.curry((sequence, key) => sequence.get(key.toString()));
+import { prop, propEquals, notNil, get } from 'functional';
+import { IMap } from 'immutable';
 
-const keyCodeToInputEventMap = Immutable.Map({
+const isEventType = propEquals('type');
+const keyCodeToInputEventMap = IMap({
     37: 'keyLeft',
     38: 'keyUp',
     39: 'keyRight',
@@ -17,7 +17,7 @@ const keyCodeToInputEventMap = Immutable.Map({
 export default function inputEvents(domEvents) {
     return domEvents
     .filter(isEventType('keydown'))
-    .map(R.prop('keyCode'))
+    .map(prop('keyCode'))
     .map(get(keyCodeToInputEventMap))
     .filter(notNil);
 }
