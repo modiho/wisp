@@ -1,7 +1,6 @@
 import draw from 'draw';
 import update from 'update';
-import inputEvents from 'inputEvents';
-import { observeEvent } from 'observable';
+import InputEvents from 'inputEvents';
 import { toImmutable } from 'immutable';
 
 const canvas = document.getElementById('game');
@@ -23,14 +22,12 @@ let state = toImmutable({
     }
 });
 
-inputEvents(observeEvent(document, 'keydown'))
-.subscribe(
-    (event) => events.push(event),
-    (error) => console.error(error)
-);
+const getInputEvents = InputEvents(document);
+
 requestAnimationFrame(loop);
 
 function loop() {
+    events = getInputEvents();
     if (events.length > 0) {
         console.log('handling events', events);
         state = events.reduce(update, state);

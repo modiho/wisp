@@ -1,23 +1,27 @@
-import { prop, propEquals, notNil, get } from 'functional';
-import { IMap } from 'immutable';
+export default function InputEvents(root) {
+    let pressedKeys = Immutable.Set();
 
-const isEventType = propEquals('type');
-const keyCodeToInputEventMap = IMap({
-    37: 'keyLeft',
-    38: 'keyUp',
-    39: 'keyRight',
-    40: 'keyDown'
-});
+    const keyCodeToInputEventMap = Immutable.Map()
+    .set(37, 'keyLeft')
+    .set(38, 'keyUp')
+    .set(39, 'keyRight')
+    .set(40, 'keyDown');
 
-/**
- * Observes dom events and outputs game input events.
- * @param {Observable} domEvents the native dom events that are observed to create input events
- * @returns {Observable} game input events
- */
-export default function inputEvents(domEvents) {
-    return domEvents
-    .filter(isEventType('keydown'))
-    .map(prop('keyCode'))
-    .map(get(keyCodeToInputEventMap))
-    .filter(notNil);
+    root.addEventListener('keydown', (event) => {
+        const inputEvent = keyCodeToInputEventMap.get(event.keyCode);
+        if (inputEvent !== undefined) {
+            pressedKeys = pressedKeys.add(inputEvent);
+        }
+    });
+
+    root.addEventListener('keyup', (event) => {
+        const inputEvent = keyCodeToInputEventMap.get(event.keyCode);
+        if (inputEvent !== undefined) {
+            pressedKeys = pressedKeys.remove(inputEvent);
+        }
+    });
+
+    return function getInputEvents() {
+        return pressedKeys.toArray();
+    };
 }
