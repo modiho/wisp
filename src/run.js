@@ -19,7 +19,13 @@ let state = toImmutable({
     playerCoordinates: {
         x: center.x,
         y: center.y
-    }
+    },
+    level: [{
+        x: 40,
+        y: 55,
+        width: 100,
+        height: 38,
+    }]
 });
 
 const getInputEvents = InputEvents(document);
