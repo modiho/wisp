@@ -1,6 +1,7 @@
 import draw from 'draw';
 import update from 'update';
-import InputEvents from 'inputEvents';
+import inputEvents from 'inputEvents';
+import { observeEvent } from 'observable';
 import { toImmutable } from 'immutable';
 
 const canvas = document.getElementById('game');
@@ -28,7 +29,7 @@ let state = toImmutable({
     }]
 });
 
-const getInputEvents = InputEvents(document);
+const getInputEvents = inputEvents(getKeyboardInput());
 
 requestAnimationFrame(loop);
 
@@ -47,4 +48,9 @@ function loop() {
 function setCanvasProportions() {
     canvas.width = width;
     canvas.height = height;
+}
+
+function getKeyboardInput() {
+    return observeEvent(document, 'keydown')
+    .merge(observeEvent(document, 'keyup'));
 }

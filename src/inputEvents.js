@@ -1,27 +1,25 @@
-export default function InputEvents(root) {
-    let pressedKeys = Immutable.Set();
+import { IMap, ISet } from 'immutable';
 
-    const keyCodeToInputEventMap = Immutable.Map()
+export default function inputEvents(keyboard) {
+    let pressedKeys = ISet();
+
+    const keyCodeToInputEventMap = IMap()
     .set(37, 'keyLeft')
     .set(38, 'keyUp')
     .set(39, 'keyRight')
     .set(40, 'keyDown');
 
-    root.addEventListener('keydown', (event) => {
+    keyboard.subscribe((event) => {
         const inputEvent = keyCodeToInputEventMap.get(event.keyCode);
-        if (inputEvent !== undefined) {
+        if (inputEvent === undefined) return;
+        if (event.type === 'keydown') {
             pressedKeys = pressedKeys.add(inputEvent);
-        }
-    });
-
-    root.addEventListener('keyup', (event) => {
-        const inputEvent = keyCodeToInputEventMap.get(event.keyCode);
-        if (inputEvent !== undefined) {
+        } else if (event.type === 'keyup') {
             pressedKeys = pressedKeys.remove(inputEvent);
         }
     });
 
-    return function getInputEvents() {
+    return function getPressedKeys() {
         return pressedKeys.toArray();
     };
 }
