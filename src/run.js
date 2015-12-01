@@ -17,15 +17,21 @@ setCanvasProportions();
 
 let events = [];
 let state = toImmutable({
-    playerCoordinates: {
+    player: {
         x: center.x,
-        y: center.y
+        y: center.y,
+        radius: 20,
     },
     level: [{
         x: 40,
         y: 55,
         width: 100,
         height: 38,
+    }, {
+        x: 12,
+        y: 130,
+        width: 190,
+        height: 15,
     }]
 });
 

@@ -1,6 +1,6 @@
 export default function draw(context, state) {
     clear(context);
-    drawCharacter(context, state.get('playerCoordinates'));
+    drawCharacter(context, state.get('player'));
     drawLevel(context, state.get('level'));
 }
 
@@ -10,9 +10,9 @@ function clear(context) {
     context.fillStyle = 'black';
 }
 
-function drawCharacter(context, coords) {
+function drawCharacter(context, player) {
     context.beginPath();
-    context.arc(coords.get('x'), coords.get('y'), 20, 0, 2*Math.PI);
+    context.arc(player.get('x'), player.get('y'), player.get('radius'), 0, 2*Math.PI);
     context.fill();
 }
 
